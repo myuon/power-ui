@@ -29,6 +29,7 @@ module.exports = {
     "react/self-closing-comp": 2,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     camelcase: [0],
   },
 };
