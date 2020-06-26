@@ -4,9 +4,9 @@ module.exports = {
     es6: true,
   },
   extends: [
-    "standard",
     "plugin:react/recommended",
-    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
     "prettier/@typescript-eslint",
   ],
   globals: {
