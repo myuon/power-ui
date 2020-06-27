@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "../src/Typography";
+import { Typography } from "./Typography";
 
 export default {
   title: "Typography",

@@ -1,7 +1,2 @@
-import React from "react";
-
-console.log("hello");
-
-export const Hoge: React.FC = () => {
-  return <>hoge</>;
-};
+export { TextField } from "./TextField/TextField";
+export { Typography } from "./Typography/Typography";
