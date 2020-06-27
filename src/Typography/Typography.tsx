@@ -17,7 +17,7 @@ const VariantTagMapping = {
   h3: "h3",
   h4: "h4",
   body: "p",
-  caption: "small",
+  caption: "p",
 } as const;
 
 export const Typography: React.FC<TypographyProps> = ({
@@ -30,6 +30,8 @@ export const Typography: React.FC<TypographyProps> = ({
     <Component
       {...others}
       css={css`
+        margin: 0;
+
         ${
           variant === "h1" &&
           css`
@@ -85,5 +87,51 @@ export const Typography: React.FC<TypographyProps> = ({
         }
       `}
     />
+  );
+};
+
+export const ExoticTypography: React.FC<TypographyProps> = ({ ...others }) => {
+  return (
+    <div
+      // ExoticTypography component自体はblock要素にしたいが、backgroundにgradientかける部分はinline-blockにしないと
+      // グラデーションの開始領域等が文字のサイズとずれてしまう
+      css={css`
+        display: block;
+      `}
+    >
+      <div
+        css={css`
+          display: inline-block;
+          background: linear-gradient(
+              217deg,
+              rgba(255, 0, 0, 1),
+              rgba(255, 0, 0, 0) 50.71%
+            ),
+            linear-gradient(
+              127deg,
+              rgba(0, 255, 0, 0.8),
+              rgba(0, 255, 0, 0) 70.71%
+            ),
+            linear-gradient(
+              0deg,
+              rgba(0, 0, 255, 0.8),
+              rgba(0, 0, 255, 0) 70.71%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(255, 255, 0, 1),
+              rgba(255, 255, 0, 0) 70.71%
+            );
+          -webkit-background-clip: text;
+          background-clip: text;
+
+          & > * {
+            color: transparent;
+          }
+        `}
+      >
+        <Typography {...others} />
+      </div>
+    </div>
   );
 };

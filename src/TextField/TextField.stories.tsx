@@ -1,9 +1,16 @@
 import React from "react";
-import { TextField } from "./TextField";
+import { TextField, ExoticTextField } from "./TextField";
 
 export default {
   title: "Input",
   component: TextField,
 };
 
-export const Usage = () => <TextField />;
+export const Usage = () => <TextField label="UserName" />;
+
+export const Variation = () => (
+  <>
+    <TextField />
+    <ExoticTextField label="UserName" />
+  </>
+);

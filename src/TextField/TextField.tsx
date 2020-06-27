@@ -1,8 +1,43 @@
 /** @jsx jsx */
 import React from "react";
 import { jsx, css } from "@emotion/core";
+import { Typography } from "../Typography/Typography";
 
-export const TextField: React.FC = () => {
+export interface TextFieldProps {
+  /** @default false */
+  inverted?: boolean;
+  label?: string;
+}
+
+export const TextField: React.FC<TextFieldProps> = ({ label, inverted }) => {
+  return (
+    <React.Fragment>
+      {label && <Typography variant="caption">{label}</Typography>}
+      <input
+        defaultValue="ゲーミングInputForm"
+        css={css`
+          font-size: 16px;
+          line-height: 24px;
+          min-height: 24px;
+          padding: 0 3px;
+
+          ${inverted &&
+          css`
+            border: 0;
+            background: #222;
+            color: white;
+          `}
+        `}
+      />
+    </React.Fragment>
+  );
+};
+
+export type ExoticTextFieldProps = TextFieldProps;
+
+export const ExoticTextField: React.FC<ExoticTextFieldProps> = ({
+  ...others
+}) => {
   return (
     <div
       css={css`
@@ -27,19 +62,7 @@ export const TextField: React.FC = () => {
         display: inline-block;
       `}
     >
-      <input
-        defaultValue="ゲーミングInputForm"
-        css={css`
-          font-size: 16px;
-          line-height: 24px;
-          min-height: 24px;
-          padding: 0 3px;
-
-          border: 0;
-          background: #222;
-          color: white;
-        `}
-      />
+      <TextField inverted {...others} />
     </div>
   );
 };

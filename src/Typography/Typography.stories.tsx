@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "./Typography";
+import { Typography, ExoticTypography } from "./Typography";
 
 export default {
   title: "Typography",
@@ -28,5 +28,8 @@ export const Variation = () => (
     <Typography variant="caption">
       Windowsでコンピューターの世界が広がります
     </Typography>
+
+    <ExoticTypography variant="h1">エキゾチックH1 Typography</ExoticTypography>
+    <ExoticTypography>エキゾチックBody</ExoticTypography>
   </>
 );
