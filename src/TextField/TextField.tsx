@@ -7,14 +7,22 @@ export interface TextFieldProps {
   /** @default false */
   inverted?: boolean;
   label?: string;
+  defaultValue?: string;
+  placeholder?: string;
 }
 
-export const TextField: React.FC<TextFieldProps> = ({ label, inverted }) => {
+export const TextField: React.FC<TextFieldProps> = ({
+  label,
+  inverted,
+  defaultValue,
+  placeholder,
+}) => {
   return (
     <React.Fragment>
       {label && <Typography variant="caption">{label}</Typography>}
       <input
-        defaultValue="ゲーミングInputForm"
+        defaultValue={defaultValue}
+        placeholder={placeholder}
         css={css`
           font-size: 16px;
           line-height: 24px;

@@ -2,7 +2,7 @@
 import React from "react";
 import { css, jsx } from "@emotion/core";
 
-export type Variant = "h1" | "h2" | "h3" | "h4" | "body" | "caption";
+export type Variant = "h1" | "h2" | "h3" | "h4" | "body" | "caption" | "button";
 
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   /**
@@ -18,6 +18,7 @@ const VariantTagMapping = {
   h4: "h4",
   body: "p",
   caption: "p",
+  button: "p",
 } as const;
 
 export const Typography: React.FC<TypographyProps> = ({
@@ -85,18 +86,30 @@ export const Typography: React.FC<TypographyProps> = ({
             letter-spacing: 0.5px;
           `
         }
+
+        ${
+          variant === "button" &&
+          css`
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: 0.65px;
+            font-weight: 500;
+          `
+        }
       `}
     />
   );
 };
 
-export const ExoticTypography: React.FC<TypographyProps> = ({ ...others }) => {
+export const ExoticTypography: React.FC<
+  TypographyProps & { inline?: boolean }
+> = ({ inline, ...others }) => {
   return (
     <div
       // ExoticTypography component自体はblock要素にしたいが、backgroundにgradientかける部分はinline-blockにしないと
       // グラデーションの開始領域等が文字のサイズとずれてしまう
       css={css`
-        display: block;
+        display: ${inline ? "inline-block" : "block"};
       `}
     >
       <div
