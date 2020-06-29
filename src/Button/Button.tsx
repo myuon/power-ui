@@ -1,7 +1,8 @@
 /** @jsx jsx */
-import React from "react";
+import React, { useCallback } from "react";
 import { css, jsx } from "@emotion/core";
 import { Typography } from "../Typography/Typography";
+import { useRippleEffect } from "./RippleEffect";
 
 export type Color = "primary" | "default" | "inverted";
 
@@ -10,43 +11,54 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   color?: Color;
 }
 
-export const Button: React.FC<ButtonProps> = ({ color, ...others }) => (
-  <button
-    {...others}
-    css={css`
-      border: 0;
-      border-radius: 3px;
-      padding: 1ex 1.5em;
-      cursor: pointer;
+export const Button: React.FC<ButtonProps> = ({ color, ...others }) => {
+  const color_ = color ?? "default";
+  const { RippleEffect, onStart } = useRippleEffect({
+    color: color_ === "default" ? "rgba(0,0,0,0.3)" : "white",
+  });
+  const handleClick = useCallback((event) => onStart(event), [onStart]);
 
-      ${color === "inverted"
-        ? css`
-            background-color: #333;
-            color: white;
-          `
-        : css`
-            background-color: ${color === "primary"
-              ? "rgb(25, 128, 255)"
-              : "rgb(245, 245, 245)"};
-            color: ${color === "primary" ? "white" : "#333"};
-            box-shadow: 0px 5px 10px -3px ${color === "primary" ? "rgba(25, 128, 255, 0.25)" : "rgba(200, 200, 200, 0.5)"};
-          `}
+  return (
+    <button
+      {...others}
+      css={css`
+        border: 0;
+        border-radius: 3px;
+        padding: 1ex 1.5em;
+        cursor: pointer;
 
-      &:hover {
-        box-shadow: 0px 5px 10px 0px
-            ${color === "primary"
-              ? "rgba(25, 128, 255, 0.5)"
-              : "rgba(200, 200, 200, 1.0)"},
-          0px 0px 2px 0px
-            ${color === "primary"
-              ? "rgba(25, 128, 255, 0.5)"
-              : "rgba(200, 200, 200, 1.0)"};
-      }
-    `}
-  >
-    <Typography variant="button">{others.children}</Typography>
-  </button>
-);
+        ${color === "inverted"
+          ? css`
+              background-color: #333;
+              color: white;
+            `
+          : css`
+              background-color: ${color === "primary"
+                ? "rgb(25, 128, 255)"
+                : "rgb(245, 245, 245)"};
+              color: ${color === "primary" ? "white" : "#333"};
+              box-shadow: 0px 5px 10px -3px ${color === "primary" ? "rgba(25, 128, 255, 0.25)" : "rgba(200, 200, 200, 0.5)"};
+            `}
+
+        &:hover {
+          box-shadow: 0px 5px 10px 0px
+              ${color === "primary"
+                ? "rgba(25, 128, 255, 0.5)"
+                : "rgba(200, 200, 200, 1.0)"},
+            0px 0px 2px 0px
+              ${color === "primary"
+                ? "rgba(25, 128, 255, 0.5)"
+                : "rgba(200, 200, 200, 1.0)"};
+        }
+
+        ${RippleEffect}
+      `}
+      onClick={handleClick}
+    >
+      <Typography variant="button">{others.children}</Typography>
+    </button>
+  );
+};
 
 export const ExoticButton: React.FC<ButtonProps> = ({ ...others }) => {
   return (
