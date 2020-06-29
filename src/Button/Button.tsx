@@ -17,6 +17,7 @@ export const Button: React.FC<ButtonProps> = ({ color, ...others }) => (
       border: 0;
       border-radius: 3px;
       padding: 1ex 1.5em;
+      cursor: pointer;
 
       ${color === "inverted"
         ? css`
@@ -28,8 +29,19 @@ export const Button: React.FC<ButtonProps> = ({ color, ...others }) => (
               ? "rgb(25, 128, 255)"
               : "rgb(245, 245, 245)"};
             color: ${color === "primary" ? "white" : "#333"};
-            box-shadow: 0px 5px 10px -3px ${color === "primary" ? "rgba(25, 128, 255, 0.5)" : "rgba(200, 200, 200, 1.0)"};
+            box-shadow: 0px 5px 10px -3px ${color === "primary" ? "rgba(25, 128, 255, 0.25)" : "rgba(200, 200, 200, 0.5)"};
           `}
+
+      &:hover {
+        box-shadow: 0px 5px 10px 0px
+            ${color === "primary"
+              ? "rgba(25, 128, 255, 0.5)"
+              : "rgba(200, 200, 200, 1.0)"},
+          0px 0px 2px 0px
+            ${color === "primary"
+              ? "rgba(25, 128, 255, 0.5)"
+              : "rgba(200, 200, 200, 1.0)"};
+      }
     `}
   >
     <Typography variant="button">{others.children}</Typography>

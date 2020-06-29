@@ -10,7 +10,9 @@ export default {
   component: TextField,
 };
 
-export const Usage = () => <TextField label="UserName" />;
+export const Usage = () => (
+  <TextField label="UserName" placeholder="ユーザー名(8文字以内)" />
+);
 
 export const Variation = () => (
   <React.Fragment>
