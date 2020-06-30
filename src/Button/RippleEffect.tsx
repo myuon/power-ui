@@ -43,7 +43,7 @@ const RippleEffect = ({
 export interface RippleEffectProps {
   color: string;
 
-  /** @default 500 */
+  /** @default 400 */
   duration?: number;
 }
 
@@ -65,7 +65,7 @@ export const useRippleEffect = ({ color, duration }: RippleEffectProps) => {
       setOpacity(1);
       setScale(0);
       setTimeout(() => {
-        setTransition(duration ?? 500);
+        setTransition(duration ?? 400);
         setOpacity(0);
         setScale(1);
       }, 0);
