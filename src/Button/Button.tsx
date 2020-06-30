@@ -6,7 +6,7 @@ import { useRippleEffect } from "./RippleEffect";
 
 export type Variant = "filled" | "outlined";
 
-export type Color = "primary" | "default" | "inverted";
+export type Color = "primary" | "default";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   /** @default filled */
@@ -14,6 +14,8 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
   /** @default default */
   color?: Color;
+
+  rippleColor?: string;
 }
 
 const theme = {
@@ -34,21 +36,19 @@ const theme = {
 export const Button: React.FC<ButtonProps> = ({
   variant,
   color,
+  rippleColor,
   ...others
 }) => {
   const variant_ = useMemo(() => variant ?? "filled", [variant]);
   const color_ = useMemo(() => color ?? "default", [color]);
-  const colorScheme = useMemo(
-    () =>
-      color_ === "primary" || color_ === "default" ? theme[color_] : undefined,
-    [color_]
-  );
+  const colorScheme = useMemo(() => theme[color_], [color_]);
 
   const { RippleEffect, onStart } = useRippleEffect({
     color:
-      variant_ === "filled"
-        ? colorScheme?.shadow ?? "white"
-        : colorScheme?.main ?? "white",
+      rippleColor ??
+      (variant_ === "filled"
+        ? colorScheme.shadow ?? "white"
+        : colorScheme.main ?? "white"),
   });
   const handleClick = useCallback((event) => onStart(event), [onStart]);
 
@@ -64,37 +64,30 @@ export const Button: React.FC<ButtonProps> = ({
           ? css`
               border: 0;
 
-              ${color === "inverted"
-                ? css`
-                    background-color: #333;
-                    color: white;
-                  `
-                : css`
-                    background-color: ${colorScheme?.main};
-                    color: ${colorScheme?.text};
-                    box-shadow: 0px 5px 10px -3px ${color === "primary" ? "rgba(25, 128, 255, 0.25)" : "rgba(200, 200, 200, 0.5)"};
-                  `}
+              background-color: ${colorScheme.main};
+              color: ${colorScheme.text};
+              box-shadow: 0px 5px 10px -3px ${color_ === "primary" ? "rgba(25, 128, 255, 0.25)" : "rgba(200, 200, 200, 0.5)"};
             `
           : css`
               background: white;
-              color: ${colorScheme?.main};
-              border: 1px solid ${colorScheme?.main};
+              color: ${colorScheme.main};
+              border: 1px solid ${colorScheme.main};
             `}
 
         &:hover {
           ${variant_ === "filled"
             ? css`
                 box-shadow: 0px 5px 10px 0px
-                    ${color === "primary"
+                    ${color_ === "primary"
                       ? "rgba(25, 128, 255, 0.5)"
                       : "rgba(200, 200, 200, 1.0)"},
                   0px 0px 2px 0px
-                    ${color === "primary"
+                    ${color_ === "primary"
                       ? "rgba(25, 128, 255, 0.5)"
                       : "rgba(200, 200, 200, 1.0)"};
               `
             : css`
-                background: ${colorScheme?.light};
+                background: ${colorScheme.light};
               `}
         }
 
@@ -130,9 +123,14 @@ export const ExoticButton: React.FC<ButtonProps> = ({ ...others }) => {
         border-radius: 2px;
         padding: 4px;
         display: inline-block;
+
+        button {
+          background-color: #333;
+          color: white;
+        }
       `}
     >
-      <Button color="inverted" {...others} />
+      <Button {...others} rippleColor="white" />
     </div>
   );
 };
