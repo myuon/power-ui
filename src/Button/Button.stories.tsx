@@ -19,5 +19,7 @@ export const Variation = () => (
     <Button variant="outlined" color="primary">
       Primary
     </Button>
+
+    <Button variant="outlined">Default</Button>
   </>
 );

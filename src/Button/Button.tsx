@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from "react";
 import { css, jsx } from "@emotion/core";
 import { Typography } from "../Typography/Typography";
 import { useRippleEffect } from "./RippleEffect";
+import ColorLib from "color";
 
 export type Variant = "filled" | "outlined";
 
@@ -21,14 +22,14 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 const theme = {
   primary: {
     main: "rgb(25, 128, 255)",
-    light: "rgba(25, 128, 255, 0.5)",
-    shadow: "white",
+    shadow: "rgba(25, 128, 255, 0.5)",
+    highlight: "white",
     text: "white",
   },
   default: {
     main: "rgb(245, 245, 245)",
-    light: "rgba(200, 200, 200, 0.5)",
-    shadow: "rgba(0,0,0,0.3)",
+    shadow: "rgba(150, 150, 150, 0.5)",
+    highlight: "rgba(0, 0, 0, 0.3)",
     text: "#333",
   },
 } as const;
@@ -44,11 +45,7 @@ export const Button: React.FC<ButtonProps> = ({
   const colorScheme = useMemo(() => theme[color_], [color_]);
 
   const { RippleEffect, onStart } = useRippleEffect({
-    color:
-      rippleColor ??
-      (variant_ === "filled"
-        ? colorScheme.shadow ?? "white"
-        : colorScheme.main ?? "white"),
+    color: rippleColor ?? colorScheme.highlight ?? "white",
   });
   const handleClick = useCallback((event) => onStart(event), [onStart]);
 
@@ -66,28 +63,28 @@ export const Button: React.FC<ButtonProps> = ({
 
               background-color: ${colorScheme.main};
               color: ${colorScheme.text};
-              box-shadow: 0px 5px 10px -3px ${color_ === "primary" ? "rgba(25, 128, 255, 0.25)" : "rgba(200, 200, 200, 0.5)"};
+              box-shadow: 0px 5px 10px -3px ${ColorLib(colorScheme.shadow).lighten(0.2).rgb().string()};
             `
           : css`
               background: white;
-              color: ${colorScheme.main};
-              border: 1px solid ${colorScheme.main};
+              color: ${color_ === "default"
+                ? colorScheme.text
+                : colorScheme.main};
+              border: 1px solid
+                ${color_ === "default" ? colorScheme.text : colorScheme.main};
             `}
 
         &:hover {
           ${variant_ === "filled"
             ? css`
-                box-shadow: 0px 5px 10px 0px
-                    ${color_ === "primary"
-                      ? "rgba(25, 128, 255, 0.5)"
-                      : "rgba(200, 200, 200, 1.0)"},
-                  0px 0px 2px 0px
-                    ${color_ === "primary"
-                      ? "rgba(25, 128, 255, 0.5)"
-                      : "rgba(200, 200, 200, 1.0)"};
+                box-shadow: 0px 5px 10px 0px ${colorScheme.shadow},
+                  0px 0px 2px 0px ${colorScheme.shadow};
               `
             : css`
-                background: ${colorScheme.light};
+                background: ${ColorLib(colorScheme.shadow)
+                  .lighten(0.4)
+                  .rgb()
+                  .string()};
               `}
         }
 
