@@ -15,5 +15,9 @@ export const Variation = () => (
     <Button>キャンセル</Button>
 
     <ExoticButton>エキゾチック送信</ExoticButton>
+
+    <Button variant="outlined" color="primary">
+      Primary
+    </Button>
   </>
 );
