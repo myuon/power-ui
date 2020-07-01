@@ -17,6 +17,8 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   color?: Color;
 
   rippleColor?: string;
+
+  icon?: JSX.Element;
 }
 
 const theme = {
@@ -38,6 +40,7 @@ export const Button: React.FC<ButtonProps> = ({
   variant,
   color,
   rippleColor,
+  icon,
   ...others
 }) => {
   const variant_ = useMemo(() => variant ?? "filled", [variant]);
@@ -93,7 +96,29 @@ export const Button: React.FC<ButtonProps> = ({
       `}
       onClick={handleClick}
     >
-      <Typography variant="button">{others.children}</Typography>
+      <Typography
+        variant="button"
+        css={css`
+          display: flex;
+          align-items: center;
+        `}
+        as="span"
+      >
+        {icon !== undefined && (
+          <span
+            css={css`
+              display: inherit;
+              align-items: inherit;
+
+              margin-right: 4px;
+              margin-left: -4px;
+            `}
+          >
+            {icon}
+          </span>
+        )}
+        {others.children}
+      </Typography>
     </button>
   );
 };

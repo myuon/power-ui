@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ExoticButton } from "./Button";
+import HomeIcon from "@material-ui/icons/Home";
 
 export default {
   title: "Button",
@@ -21,5 +22,9 @@ export const Variation = () => (
     </Button>
 
     <Button variant="outlined">Default</Button>
+
+    <Button icon={<HomeIcon />}>Default</Button>
+
+    <Button icon={<HomeIcon />} />
   </>
 );

@@ -9,6 +9,8 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
    * @default body
    */
   variant?: Variant;
+
+  as?: React.ElementType;
 }
 
 const VariantTagMapping = {
@@ -23,9 +25,10 @@ const VariantTagMapping = {
 
 export const Typography: React.FC<TypographyProps> = ({
   variant,
+  as,
   ...others
 }) => {
-  const Component = VariantTagMapping[variant ?? "body"];
+  const Component = as ?? VariantTagMapping[variant ?? "body"];
 
   return (
     <Component
