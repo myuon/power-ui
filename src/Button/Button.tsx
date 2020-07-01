@@ -56,6 +56,7 @@ export const Button: React.FC<ButtonProps> = ({
         cursor: pointer;
         border-radius: 3px;
         padding: 1ex 1.5em;
+        outline: none;
 
         ${variant_ === "filled"
           ? css`

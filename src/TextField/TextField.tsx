@@ -4,8 +4,6 @@ import { jsx, css } from "@emotion/core";
 import { Typography } from "../Typography/Typography";
 
 export interface TextFieldProps {
-  /** @default false */
-  inverted?: boolean;
   label?: string;
   defaultValue?: string;
   placeholder?: string;
@@ -13,7 +11,6 @@ export interface TextFieldProps {
 
 export const TextField: React.FC<TextFieldProps> = ({
   label,
-  inverted,
   defaultValue,
   placeholder,
 }) => {
@@ -27,14 +24,15 @@ export const TextField: React.FC<TextFieldProps> = ({
           font-size: 16px;
           line-height: 24px;
           min-height: 24px;
-          padding: 0 3px;
+          padding: 0.5ex 0.5em;
+          border-radius: 3px;
+          border: 1px solid #999;
+          outline: none;
 
-          ${inverted &&
-          css`
-            border: 0;
-            background: #222;
-            color: white;
-          `}
+          &:focus {
+            border-color: rgb(25, 128, 255);
+            box-shadow: 0px 0px 3px 0px rgba(25, 128, 255, 0.5);
+          }
         `}
       />
     </React.Fragment>
@@ -68,9 +66,20 @@ export const ExoticTextField: React.FC<ExoticTextFieldProps> = ({
         border-radius: 2px;
         padding: 4px;
         display: inline-block;
+
+        & > input {
+          background: #222;
+          color: white;
+          border: 1px solid #222;
+
+          &:focus {
+            border-color: white;
+            box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.5);
+          }
+        }
       `}
     >
-      <TextField inverted {...others} />
+      <TextField {...others} />
     </div>
   );
 };
