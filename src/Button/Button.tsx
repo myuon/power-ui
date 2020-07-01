@@ -102,6 +102,7 @@ export const Button: React.FC<ButtonProps> = ({
           display: flex;
           align-items: center;
         `}
+        color="inherit"
         as="span"
       >
         {icon !== undefined && (

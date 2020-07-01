@@ -10,6 +10,8 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
    */
   variant?: Variant;
 
+  color?: "inherit";
+
   as?: React.ElementType;
 }
 
@@ -26,6 +28,7 @@ const VariantTagMapping = {
 export const Typography: React.FC<TypographyProps> = ({
   variant,
   as,
+  color,
   ...others
 }) => {
   const Component = as ?? VariantTagMapping[variant ?? "body"];
@@ -35,7 +38,7 @@ export const Typography: React.FC<TypographyProps> = ({
       {...others}
       css={css`
         margin: 0;
-        color: #333;
+        color: ${color === "inherit" ? "inherit" : "#333"};
 
         ${
           variant === "h1" &&
