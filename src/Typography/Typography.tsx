@@ -35,6 +35,7 @@ export const Typography: React.FC<TypographyProps> = ({
       {...others}
       css={css`
         margin: 0;
+        color: #333;
 
         ${
           variant === "h1" &&

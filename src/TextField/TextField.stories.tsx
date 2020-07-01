@@ -6,7 +6,7 @@ import { ExoticTypography } from "../Typography/Typography";
 import { Button, ExoticButton } from "../Button/Button";
 
 export default {
-  title: "Input",
+  title: "TextField",
   component: TextField,
 };
 

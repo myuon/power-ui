@@ -24,7 +24,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           font-size: 16px;
           line-height: 24px;
           min-height: 24px;
-          padding: 0.5ex 0.5em;
+          padding: 0.75ex 0.5em;
           border-radius: 3px;
           border: 1px solid #999;
           outline: none;
