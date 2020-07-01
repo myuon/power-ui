@@ -9,7 +9,8 @@ export type Variant = "filled" | "outlined";
 
 export type Color = "primary" | "default";
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** @default filled */
   variant?: Variant;
 

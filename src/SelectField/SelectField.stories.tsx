@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { SelectField } from "./SelectField";
 import { Typography } from "../Typography/Typography";
+import { Button } from "../Button/Button";
 
 export default {
   title: "SelectField",
@@ -20,6 +21,28 @@ export const Usage = () => {
           onChange={setValue}
         />
       </div>
+    </>
+  );
+};
+
+export const Uncontrolled = () => {
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const input = Object.fromEntries(new FormData(event.currentTarget));
+
+      window.alert(`選ばれたのは${input["numbers"]}でした。`);
+    },
+    []
+  );
+
+  return (
+    <>
+      <form onSubmit={handleSubmit} style={{ width: 250 }}>
+        <SelectField name="numbers" data={["1", "2", "3"]} />
+
+        <Button type="submit">Send</Button>
+      </form>
     </>
   );
 };

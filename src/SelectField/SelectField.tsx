@@ -23,9 +23,13 @@ const useClickOutside = (
   }, [ref, callback]);
 };
 
-export interface SelectFieldProps {
+export interface SelectFieldProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "onChange" | "defaultValue"
+  > {
   data: string[];
-  defaultValue: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
 }
 
@@ -33,6 +37,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   data,
   defaultValue,
   onChange,
+  ...others
 }) => {
   const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
@@ -48,6 +53,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const popperRef = useRef(null);
   useClickOutside(popperRef, handleClose);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (inputRef.current && value) {
+      inputRef.current.value = value;
+    }
+  }, [value]);
+
   return (
     <React.Fragment>
       <div
@@ -55,6 +67,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           position: relative;
         `}
       >
+        <input readOnly type="hidden" ref={inputRef} {...others} />
         <div
           css={css`
             padding: 0.75ex 0.5em;
