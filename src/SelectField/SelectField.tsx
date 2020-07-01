@@ -67,9 +67,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           position: relative;
         `}
       >
-        <input readOnly type="hidden" ref={inputRef} {...others} />
+        <input
+          readOnly
+          type="hidden"
+          ref={inputRef}
+          aria-hidden={true}
+          tabIndex={-1}
+          {...others}
+        />
         <div
           css={css`
+            outline: none;
             padding: 0.75ex 0.5em;
             border: 1px solid #999;
             border-radius: 3px;
@@ -77,8 +85,16 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             display: flex;
             align-items: center;
             cursor: pointer;
+
+            &:focus {
+              border-color: rgb(25, 128, 255);
+              box-shadow: 0px 0px 3px 0px rgba(25, 128, 255, 0.5);
+            }
           `}
           onClick={handleOpen}
+          aria-haspopup="listbox"
+          tabIndex={0}
+          role="button"
         >
           <div
             css={css`
@@ -90,6 +106,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           <ArrowDropDown />
         </div>
         <ul
+          role="listbox"
+          tabIndex={-1}
           ref={popperRef}
           css={css`
             ${!open &&
@@ -109,6 +127,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             z-index: 1;
             background: white;
             width: 100%;
+            outline: none;
 
             li {
               cursor: pointer;
@@ -121,7 +140,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           `}
         >
           {data.map((d, i) => (
-            <li key={i} onClick={() => handleChange(i)}>
+            <li
+              key={i}
+              onClick={() => handleChange(i)}
+              role="option"
+              aria-disabled={false}
+            >
               <Typography>{d}</Typography>
             </li>
           ))}
