@@ -52,64 +52,68 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     <React.Fragment>
       <div
         css={css`
-          padding: 0.75ex 0.5em;
-          border: 1px solid #999;
-          border-radius: 3px;
-
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-
           position: relative;
         `}
-        onClick={handleOpen}
       >
         <div
           css={css`
-            flex-grow: 1;
+            padding: 0.75ex 0.5em;
+            border: 1px solid #999;
+            border-radius: 3px;
+
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+          `}
+          onClick={handleOpen}
+        >
+          <div
+            css={css`
+              flex-grow: 1;
+            `}
+          >
+            <Typography>{value}</Typography>
+          </div>
+          <ArrowDropDown />
+        </div>
+        <ul
+          ref={popperRef}
+          css={css`
+            ${!open &&
+            css`
+              display: none;
+            `}
+
+            margin: 0;
+            padding: 5px;
+            list-style: none;
+            border-radius: 3px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: white;
+            width: 100%;
+
+            li {
+              cursor: pointer;
+              padding: 1ex 0.5em;
+              border-radius: 3px;
+            }
+            li:hover {
+              background-color: #eee;
+            }
           `}
         >
-          <Typography>{value}</Typography>
-        </div>
-        <ArrowDropDown />
+          {data.map((d, i) => (
+            <li key={i} onClick={() => handleChange(i)}>
+              <Typography>{d}</Typography>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul
-        ref={popperRef}
-        css={css`
-          ${!open &&
-          css`
-            display: none;
-          `}
-
-          margin: 0;
-          padding: 5px;
-          list-style: none;
-          border-radius: 3px;
-          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 1;
-          background: white;
-          width: inherit;
-
-          li {
-            cursor: pointer;
-            padding: 1ex 0.5em;
-            border-radius: 3px;
-          }
-          li:hover {
-            background-color: #eee;
-          }
-        `}
-      >
-        {data.map((d, i) => (
-          <li key={i} onClick={() => handleChange(i)}>
-            <Typography>{d}</Typography>
-          </li>
-        ))}
-      </ul>
     </React.Fragment>
   );
 };
