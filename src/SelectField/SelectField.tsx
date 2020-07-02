@@ -3,25 +3,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { jsx, css } from "@emotion/core";
 import { Typography } from "../Typography/Typography";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
-
-const useClickOutside = (
-  ref: React.RefObject<Element>,
-  callback: (event: Event) => void
-) => {
-  useEffect(() => {
-    const handleClickOutside = (event: Event) => {
-      if (ref.current && !ref.current.contains(event.target as Node | null)) {
-        callback(event);
-      }
-    };
-    document.addEventListener("mousedown", { handleEvent: handleClickOutside });
-
-    return () =>
-      document.removeEventListener("mousedown", {
-        handleEvent: handleClickOutside,
-      });
-  }, [ref, callback]);
-};
+import { useClickOutside } from "../useClickOutside";
 
 export interface SelectFieldProps
   extends Omit<

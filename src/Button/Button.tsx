@@ -42,6 +42,7 @@ export const Button: React.FC<ButtonProps> = ({
   color,
   rippleColor,
   icon,
+  onClick,
   ...others
 }) => {
   const variant_ = useMemo(() => variant ?? "filled", [variant]);
@@ -51,7 +52,16 @@ export const Button: React.FC<ButtonProps> = ({
   const { RippleEffect, onStart } = useRippleEffect({
     color: rippleColor ?? colorScheme.highlight ?? "white",
   });
-  const handleClick = useCallback((event) => onStart(event), [onStart]);
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onStart(event);
+
+      if (onClick) {
+        onClick(event);
+      }
+    },
+    [onClick, onStart]
+  );
 
   return (
     <button

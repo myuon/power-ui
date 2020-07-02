@@ -1,8 +1,9 @@
 /** @jsx jsx */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import ReactDOM from "react-dom";
 import { jsx, css } from "@emotion/core";
 import { Grid } from "../Grid/Grid";
+import { useClickOutside } from "../useClickOutside";
 
 export interface ModalFrameProps {
   header?: JSX.Element;
@@ -39,15 +40,15 @@ export const ModalFrame: React.FC<ModalFrameProps> = ({ header, children }) => {
   );
 };
 
-export interface ModalProps extends ModalFrameProps {
-  /** @default false */
-  open?: boolean;
-}
+export const ModalWrapper: React.FC<
+  ModalFrameProps & { onClickOutside?: () => void }
+> = ({ children, onClickOutside, ...others }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const callback = useCallback(() => {
+    if (onClickOutside) onClickOutside();
+  }, [onClickOutside]);
+  useClickOutside(modalRef, callback);
 
-export const ModalWrapper: React.FC<ModalFrameProps> = ({
-  children,
-  ...others
-}) => {
   return (
     <div
       css={css`
@@ -56,6 +57,8 @@ export const ModalWrapper: React.FC<ModalFrameProps> = ({
         width: 100%;
         height: 100%;
         position: fixed;
+        top: 0;
+        left: 0;
       `}
     >
       <div
@@ -65,6 +68,7 @@ export const ModalWrapper: React.FC<ModalFrameProps> = ({
           left: 50%;
           transform: translate(-50%, -50%);
         `}
+        ref={modalRef}
       >
         <ModalFrame {...others}>{children}</ModalFrame>
       </div>
@@ -72,7 +76,18 @@ export const ModalWrapper: React.FC<ModalFrameProps> = ({
   );
 };
 
-export const Modal: React.FC<ModalProps> = ({ open, ...others }) => {
+export interface ModalProps extends ModalFrameProps {
+  /** @default false */
+  open?: boolean;
+
+  onClickOutside?: () => void;
+}
+
+export const Modal: React.FC<ModalProps> = ({
+  open,
+  onClickOutside,
+  ...others
+}) => {
   const [portal, setPortal] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -86,6 +101,10 @@ export const Modal: React.FC<ModalProps> = ({ open, ...others }) => {
   }, []);
 
   return open
-    ? portal && ReactDOM.createPortal(<ModalWrapper {...others} />, portal)
+    ? portal &&
+        ReactDOM.createPortal(
+          <ModalWrapper {...others} onClickOutside={onClickOutside} />,
+          portal
+        )
     : null;
 };
