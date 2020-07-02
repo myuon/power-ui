@@ -1,12 +1,13 @@
 /** @jsx jsx */
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useRef, useCallback, useContext } from "react";
 import { jsx, css } from "@emotion/core";
 import { Grid } from "../Grid/Grid";
 import { useClickOutside } from "../useClickOutside";
+import { Portal } from "../Portal";
 
 export interface ModalFrameProps {
   header?: JSX.Element;
+  children?: JSX.Element;
 }
 
 export const ModalFrame: React.FC<ModalFrameProps> = ({ header, children }) => {
@@ -88,23 +89,40 @@ export const Modal: React.FC<ModalProps> = ({
   onClickOutside,
   ...others
 }) => {
-  const [portal, setPortal] = useState<HTMLElement | null>(null);
+  return open ? (
+    <Portal>
+      <ModalWrapper {...others} onClickOutside={onClickOutside} />
+    </Portal>
+  ) : null;
+};
 
-  useEffect(() => {
-    const elem = document.createElement("div");
-    setPortal(elem);
+const ModalContext = React.createContext<{
+  add: (props: ModalFrameProps) => void;
+} | null>(null);
 
-    document.body.appendChild(elem);
-    return () => {
-      document.body.removeChild(elem);
-    };
-  }, []);
+export const ModalProvider: React.FC = ({ children }) => {
+  const [element, setElement] = useState<JSX.Element>();
+  const handleClose = useCallback(() => setElement(undefined), []);
 
-  return open
-    ? portal &&
-        ReactDOM.createPortal(
-          <ModalWrapper {...others} onClickOutside={onClickOutside} />,
-          portal
-        )
-    : null;
+  const add = useCallback(
+    (props: ModalFrameProps) => {
+      setElement(<ModalWrapper {...props} onClickOutside={handleClose} />);
+    },
+    [handleClose]
+  );
+
+  return (
+    <ModalContext.Provider value={{ add }}>
+      <Portal>{element}</Portal>
+      {children}
+    </ModalContext.Provider>
+  );
+};
+
+export const useModal = () => {
+  const props = useContext(ModalContext);
+
+  return {
+    openModal: props!.add,
+  };
 };

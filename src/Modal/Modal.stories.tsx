@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal } from "../Modal/Modal";
+import { Modal, useModal, ModalProvider } from "../Modal/Modal";
 import { Typography } from "../Typography/Typography";
 import { Button } from "../Button/Button";
 
@@ -28,5 +28,25 @@ export const Usage = () => {
         </Typography>
       </Modal>
     </React.Fragment>
+  );
+};
+
+const UseModalHooksInternal = () => {
+  const { openModal } = useModal();
+  const handleOpen = () => {
+    openModal({
+      header: <Typography variant="h3">確認ダイアログ</Typography>,
+      children: <Typography>本当によろしいですか？</Typography>,
+    });
+  };
+
+  return <Button onClick={handleOpen}>Open</Button>;
+};
+
+export const useModalHooks = () => {
+  return (
+    <ModalProvider>
+      <UseModalHooksInternal />
+    </ModalProvider>
   );
 };
