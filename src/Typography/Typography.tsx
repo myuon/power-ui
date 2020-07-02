@@ -77,7 +77,7 @@ export const Typography: React.FC<TypographyProps> = ({
         }
 
         ${
-          variant === "body" &&
+          (variant ?? "body") === "body" &&
           css`
             font-size: 16px;
             line-height: 24px;

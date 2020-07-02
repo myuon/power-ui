@@ -39,6 +39,7 @@ export const Grid: React.FC<GridProps> = ({
             display: flex;
             flex-wrap: wrap;
             width: 100%;
+            flex-direction: ${direction};
           `
         }
         ${
