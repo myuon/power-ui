@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { jsx, css } from "@emotion/core";
 import { Typography } from "../Typography/Typography";
 
@@ -12,19 +12,24 @@ export interface TextFieldProps {
   label?: string;
   defaultValue?: string;
   placeholder?: string;
+  onChange?: (
+    value: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }
 
 const OutlinedTextField = ({
   defaultValue,
   placeholder,
-}: {
-  defaultValue?: string;
-  placeholder?: string;
+  onChange,
+}: Pick<TextFieldProps, "defaultValue" | "placeholder"> & {
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <input
       defaultValue={defaultValue}
       placeholder={placeholder}
+      onChange={onChange}
       css={css`
         font-size: 16px;
         line-height: 24px;
@@ -47,9 +52,9 @@ const OutlinedTextField = ({
 const UnderlinedTextField = ({
   defaultValue,
   placeholder,
-}: {
-  defaultValue?: string;
-  placeholder?: string;
+  onChange,
+}: Pick<TextFieldProps, "defaultValue" | "placeholder"> & {
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <div
@@ -64,6 +69,7 @@ const UnderlinedTextField = ({
       <input
         defaultValue={defaultValue}
         placeholder={placeholder}
+        onChange={onChange}
         css={css`
           font-size: 16px;
           line-height: 24px;
@@ -104,6 +110,7 @@ const UnderlinedTextField = ({
             transform: translate(-50%);
             bottom: 0;
             transition: all 0.3s ease;
+            backface-visibility: hidden;
           `}
         />
       </div>
@@ -116,7 +123,16 @@ export const TextField: React.FC<TextFieldProps> = ({
   label,
   defaultValue,
   placeholder,
+  onChange,
 }) => {
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (onChange) {
+        onChange(event.currentTarget.value, event);
+      }
+    },
+    [onChange]
+  );
   const TextFieldComponent = useMemo(
     () =>
       (variant ?? "outlined") === "outlined"
@@ -131,6 +147,7 @@ export const TextField: React.FC<TextFieldProps> = ({
       <TextFieldComponent
         defaultValue={defaultValue}
         placeholder={placeholder}
+        onChange={handleChange}
       />
     </React.Fragment>
   );
