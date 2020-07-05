@@ -14,7 +14,14 @@ export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
 
   xs?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | "auto";
 
-  align?: "stretch" | "normal" | "center";
+  align?:
+    | "stretch"
+    | "normal"
+    | "center"
+    | "start"
+    | "end"
+    | "flex-start"
+    | "flex-end";
 }
 
 export const Grid: React.FC<GridProps> = ({

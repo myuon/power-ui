@@ -4,6 +4,7 @@ import { TextField, ExoticTextField } from "./TextField";
 import { css, jsx } from "@emotion/core";
 import { ExoticTypography } from "../Typography/Typography";
 import { Button, ExoticButton } from "../Button/Button";
+import { Grid } from "../Grid/Grid";
 
 export default {
   title: "TextField",
@@ -15,10 +16,21 @@ export const Usage = () => (
 );
 
 export const Variation = () => (
-  <React.Fragment>
-    <TextField />
-    <ExoticTextField label="UserName" />
-  </React.Fragment>
+  <Grid container gap={1} align="flex-end">
+    <Grid item>
+      <TextField placeholder="input here..." />
+    </Grid>
+    <Grid item>
+      <TextField
+        variant="underlined"
+        label="UserName"
+        placeholder="input here..."
+      />
+    </Grid>
+    <Grid item>
+      <ExoticTextField label="UserName" />
+    </Grid>
+  </Grid>
 );
 
 export const ExoticForm = () => (

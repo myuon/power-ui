@@ -1,22 +1,66 @@
 /** @jsx jsx */
-import React from "react";
+import React, { useMemo } from "react";
 import { jsx, css } from "@emotion/core";
 import { Typography } from "../Typography/Typography";
 
+export type Variant = "outlined" | "underlined";
+
 export interface TextFieldProps {
+  /** @default outlined */
+  variant?: Variant;
+
   label?: string;
   defaultValue?: string;
   placeholder?: string;
 }
 
-export const TextField: React.FC<TextFieldProps> = ({
-  label,
+const OutlinedTextField = ({
   defaultValue,
   placeholder,
+}: {
+  defaultValue?: string;
+  placeholder?: string;
 }) => {
   return (
-    <React.Fragment>
-      {label && <Typography variant="caption">{label}</Typography>}
+    <input
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+      css={css`
+        font-size: 16px;
+        line-height: 24px;
+        min-height: 24px;
+        padding: 0.75ex 0.5em;
+        outline: none;
+
+        border-radius: 3px;
+        border: 1px solid #999;
+
+        &:focus {
+          border-color: rgb(25, 128, 255);
+          box-shadow: 0px 0px 3px 0px rgba(25, 128, 255, 0.5);
+        }
+      `}
+    />
+  );
+};
+
+const UnderlinedTextField = ({
+  defaultValue,
+  placeholder,
+}: {
+  defaultValue?: string;
+  placeholder?: string;
+}) => {
+  return (
+    <div
+      css={css`
+        position: relative;
+
+        input:focus + div > div.enabled-on-focused {
+          width: 100%;
+        }
+      `}
+    >
       <input
         defaultValue={defaultValue}
         placeholder={placeholder}
@@ -25,15 +69,68 @@ export const TextField: React.FC<TextFieldProps> = ({
           line-height: 24px;
           min-height: 24px;
           padding: 0.75ex 0.5em;
-          border-radius: 3px;
-          border: 1px solid #999;
           outline: none;
-
-          &:focus {
-            border-color: rgb(25, 128, 255);
-            box-shadow: 0px 0px 3px 0px rgba(25, 128, 255, 0.5);
-          }
+          border: 0;
         `}
+      />
+
+      <div
+        css={css`
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          pointer-events: none;
+        `}
+      >
+        <div
+          css={css`
+            border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+            width: 100%;
+            height: 2px;
+            position: absolute;
+            bottom: 0;
+          `}
+        />
+        <div
+          className="enabled-on-focused"
+          css={css`
+            border-bottom: 2px solid rgb(25, 128, 255);
+            width: 0;
+            height: 2px;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            bottom: 0;
+            transition: all 0.3s ease;
+          `}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const TextField: React.FC<TextFieldProps> = ({
+  variant,
+  label,
+  defaultValue,
+  placeholder,
+}) => {
+  const TextFieldComponent = useMemo(
+    () =>
+      (variant ?? "outlined") === "outlined"
+        ? OutlinedTextField
+        : UnderlinedTextField,
+    [variant]
+  );
+
+  return (
+    <React.Fragment>
+      {label && <Typography variant="caption">{label}</Typography>}
+      <TextFieldComponent
+        defaultValue={defaultValue}
+        placeholder={placeholder}
       />
     </React.Fragment>
   );
