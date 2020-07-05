@@ -2,14 +2,16 @@
 import React, { useCallback, useRef, useState } from "react";
 import { css, jsx } from "@emotion/core";
 import { Button } from "../Button/Button";
+import { Grid } from "../Grid/Grid";
 
 export default {
-  title: "examples",
+  title: "examples/FileUpload",
 };
 
 const DropArea: React.FC<{
+  multiple?: boolean;
   onSelectFiles?: (files: FileList) => void;
-}> = ({ onSelectFiles }) => {
+}> = ({ multiple, onSelectFiles }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleClickDropArea = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -81,7 +83,7 @@ const DropArea: React.FC<{
     >
       <input
         type="file"
-        multiple
+        multiple={multiple}
         accept="image/*"
         aria-hidden={true}
         ref={fileInputRef}
@@ -126,14 +128,62 @@ const DropArea: React.FC<{
   );
 };
 
+const FileThumbnail: React.FC<{
+  file: File;
+  width: number;
+  height: number;
+}> = ({ file, width, height }) => {
+  const [loaded, setLoaded] = useState(false);
+  const objectURL = URL.createObjectURL(file);
+  const handleLoad = () => {
+    URL.revokeObjectURL(objectURL);
+    setLoaded(true);
+  };
+
+  return (
+    <div
+      css={css`
+        position: relative;
+        width: ${width}px;
+        height: ${height}px;
+
+        img {
+          object-fit: cover;
+          width: inherit;
+          height: inherit;
+        }
+      `}
+    >
+      {!loaded && (
+        <span
+          css={css`
+            position: absolute;
+            top: 0;
+            left: 0;
+          `}
+        >
+          loading...
+        </span>
+      )}
+      <img onLoad={handleLoad} src={objectURL} />
+    </div>
+  );
+};
+
 export const FileUpload = () => {
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<{ name: string; file: File }[]>([]);
   const handleSelectFiles = useCallback((files: FileList) => {
     setFiles((prev) => {
       const current = [...prev];
 
       for (let i = 0, numFiles = files.length; i < numFiles; i++) {
-        current.push(files[i].name);
+        console.log(files[i].type);
+        if (!files[i].type.startsWith("image/")) continue;
+
+        current.push({
+          name: files[i].name,
+          file: files[i],
+        });
       }
 
       return current;
@@ -142,9 +192,15 @@ export const FileUpload = () => {
 
   return (
     <React.Fragment>
-      <DropArea onSelectFiles={handleSelectFiles} />
+      <DropArea multiple onSelectFiles={handleSelectFiles} />
 
-      <p>Selected Files: {files.join(",")}</p>
+      <Grid container>
+        {files.map((file) => (
+          <Grid item key={file.name}>
+            <FileThumbnail file={file.file} width={200} height={200} />
+          </Grid>
+        ))}
+      </Grid>
     </React.Fragment>
   );
 };
