@@ -1,2 +1,2 @@
-# power-ui
+# @myuon/power-ui
 
