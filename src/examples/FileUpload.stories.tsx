@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useCallback, useRef, useState } from "react";
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from "@emotion/react";
 import { Button } from "../Button/Button";
 import { Grid } from "../Grid/Grid";
 

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { jsx, css } from "@emotion/core";
+import { jsx, css } from "@emotion/react";
 import { Typography } from "../Typography/Typography";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import { useClickOutside } from "../useClickOutside";

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useMemo, useCallback } from "react";
-import { jsx, css } from "@emotion/core";
+import { jsx, css } from "@emotion/react";
 import { Typography } from "../Typography/Typography";
 
 export type Variant = "outlined" | "underlined";

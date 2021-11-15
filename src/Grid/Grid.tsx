@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from "react";
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from "@emotion/react";
 
 export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   /** @default 0 */

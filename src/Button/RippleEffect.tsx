@@ -1,5 +1,5 @@
-import React, { useState, useCallback, MouseEvent } from "react";
-import { css } from "@emotion/core";
+import React, { useState, useCallback } from "react";
+import { css } from "@emotion/react";
 
 const RippleEffect = ({
   top,
