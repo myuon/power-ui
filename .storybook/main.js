@@ -1,5 +1,6 @@
 module.exports = {
-  stories: ["../**/*.stories.tsx"],
+  stories: ["../src/**/*.stories.tsx"],
+  addons: ["@storybook/addon-essentials"],
   webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
@@ -7,13 +8,19 @@ module.exports = {
         {
           loader: require.resolve("ts-loader"),
         },
-        // Optional
-        {
-          loader: require.resolve("react-docgen-typescript-loader"),
-        },
       ],
     });
     config.resolve.extensions.push(".ts", ".tsx");
     return config;
+  },
+  typescript: {
+    check: false,
+    checkOptions: {},
+    reactDocgen: "react-docgen-typescript",
+    reactDocgenTypescriptOptions: {
+      shouldExtractLiteralValuesFromEnum: true,
+      propFilter: (prop) =>
+        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
+    },
   },
 };
