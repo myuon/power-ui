@@ -1,6 +1,6 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import React, { useState, useRef, useCallback, useContext } from "react";
-import { jsx, css } from "@emotion/react";
+import { css } from "@emotion/react";
 import { Grid } from "../Grid/Grid";
 import { useClickOutside } from "../useClickOutside";
 import { Portal } from "../Portal";

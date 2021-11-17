@@ -1,7 +1,7 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import React from "react";
 import { TextField, ExoticTextField } from "./TextField";
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { ExoticTypography } from "../Typography/Typography";
 import { Button, ExoticButton } from "../Button/Button";
 import { Grid } from "../Grid/Grid";

@@ -1,6 +1,6 @@
-/** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import React, { useCallback, useMemo } from "react";
-import { css, jsx } from "@emotion/react";
+import { css } from "@emotion/react";
 import { Typography } from "../Typography/Typography";
 import { useRippleEffect } from "./RippleEffect";
 import ColorLib from "color";
