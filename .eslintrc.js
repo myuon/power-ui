@@ -6,8 +6,6 @@ module.exports = {
   extends: [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:react/jsx-runtime",
   ],
   globals: {
     Atomics: "readonly",
